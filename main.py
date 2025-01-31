@@ -7,7 +7,7 @@ def welcome():
     print()
 
 def rules():
-    print("You will have 10, 5 or 3 chances to guess the correct number, based on the difficuly you will choose")
+    print("You will have 10, 5 or 3 chances to guess the correct number, based on the difficulty you will choose")
     print("After each guess, I will let you know if the number you selected is greater or less than the correct number")
     print()
     print("Please select the difficulty level:")
@@ -19,43 +19,41 @@ def rules():
 def get_difficulty_level():
     while True:
         try:
-            selected_level = int(input("Enter your choice: "))
-            if selected_level > 3 or selected_level < 0:
+            selected_level = int(input("Enter your difficulty level choice: "))
+            if selected_level not in [1, 2, 3]:
                 print("Please enter a valid number: 1, 2 or 3")
-            else:
-                break
+                continue
+
+            return selected_level
+
         except ValueError:
             print("Please enter a valid number: 1, 2 or 3")
 
-    return selected_level
-
-def get_number_of_chances(selected_level):
+def get_number_of_max_attempts(selected_level):
+    levels = {
+        1: ("Easy", 10),
+        2: ("Medium", 5),
+        3: ("hard", 3)
+    }
     print()
-    if selected_level == 1:
-        print("Great! You have selected the Easy difficulty level.")
-        print("You have 10 chances to guess the number")
+    name, chances = levels[selected_level]
 
-        chances = 10
-    elif selected_level == 2:
-        print("Great! You have selected the Medium difficulty level.")
-        print("You have 5 chances to guess the number")
-
-        chances = 5
-    else:
-        print("Great! You have selected the Hard difficulty level.")
-        print("You have 3 chances to guess the number")
-
-        chances = 3
+    print(f"Great! You have selected the {name} difficulty level.")
+    print(f"You have {chances} chances to guess the number")
     print()
+
     return chances
 
-def play(correct_number, attempts, chances):
+def play(correct_number, max_attempts):
+    attempts = 0
+
     while True:
         try:
             guessed_number = int(input("Enter your guess: "))
 
             if guessed_number > 100 or guessed_number < 1:
                 print("Please enter a valid number between 1 and 100")
+                continue
 
         except ValueError:
             print("Please enter a valid number between 1 and 100")
@@ -66,7 +64,7 @@ def play(correct_number, attempts, chances):
             print(f"Congratulations! You guessed the correct number in {attempts} attempts.")
             return True
 
-        elif attempts == chances:
+        elif attempts == max_attempts:
             print("Unfortunately, you ran out of chances. Round Over!")
             print(f"The correct number was {correct_number}")
             return False
@@ -79,7 +77,7 @@ def play(correct_number, attempts, chances):
 
 def want_to_play_again():
     while True:
-        play_again = input("Would you like to play another round(y, n)? :")
+        play_again = input("Would you like to play another round(y, n)? :").strip().lower()
         if play_again == "n" or play_again == "no":
             return False
         elif play_again == "y" or play_again == "yes":
@@ -100,14 +98,13 @@ if __name__ == "__main__":
     while True:
 
         selected_level = get_difficulty_level()
-        chances = get_number_of_chances(selected_level)
+        chances = get_number_of_max_attempts(selected_level)
 
         # Using the random module to select a random number between 1 and 100:
         correct_number = random.randint(1, 100)
-        attempts = 0
 
         # play return True if user won, False if user loses:
-        did_user_win = play(correct_number, attempts, chances)
+        did_user_win = play(correct_number, chances)
 
         rounds += 1
 
