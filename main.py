@@ -54,7 +54,7 @@ def play(correct_number, attempts, chances):
         try:
             guessed_number = int(input("Enter your guess: "))
 
-            if guessed_number > 10 or guessed_number < 1:
+            if guessed_number > 100 or guessed_number < 1:
                 print("Please enter a valid number between 1 and 100")
 
         except ValueError:
