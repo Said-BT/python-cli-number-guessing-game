@@ -33,16 +33,16 @@ def get_number_of_max_attempts(selected_level):
     levels = {
         1: ("Easy", 10),
         2: ("Medium", 5),
-        3: ("hard", 3)
+        3: ("Hard", 3)
     }
     print()
-    name, chances = levels[selected_level]
+    name, max_attempts = levels[selected_level]
 
     print(f"Great! You have selected the {name} difficulty level.")
-    print(f"You have {chances} chances to guess the number")
+    print(f"You have {max_attempts} chances to guess the number")
     print()
 
-    return chances
+    return max_attempts
 
 def play(correct_number, max_attempts):
     attempts = 0
@@ -57,6 +57,7 @@ def play(correct_number, max_attempts):
 
         except ValueError:
             print("Please enter a valid number between 1 and 100")
+            continue
 
         attempts += 1
 
@@ -77,7 +78,7 @@ def play(correct_number, max_attempts):
 
 def want_to_play_again():
     while True:
-        play_again = input("Would you like to play another round(y, n)? :").strip().lower()
+        play_again = input("Would you like to play another round (y, n)? :").strip().lower()
         if play_again == "n" or play_again == "no":
             return False
         elif play_again == "y" or play_again == "yes":
@@ -98,13 +99,13 @@ if __name__ == "__main__":
     while True:
 
         selected_level = get_difficulty_level()
-        chances = get_number_of_max_attempts(selected_level)
+        max_attempts = get_number_of_max_attempts(selected_level)
 
         # Using the random module to select a random number between 1 and 100:
         correct_number = random.randint(1, 100)
 
         # play return True if user won, False if user loses:
-        did_user_win = play(correct_number, chances)
+        did_user_win = play(correct_number, max_attempts)
 
         rounds += 1
 
